@@ -19,8 +19,8 @@ class Dialog(QtWidgets.QDialog, dialogForm):
         event.accept()
     def TakePicture(self):
         self.Images.append(QtWidgets.QFileDialog.getOpenFileName(None,"Укажите изображение",QtCore.QDir.homePath(),"Файл изображения (*.jpg);;Все файлы (*.*)"))
-        label = QtWidgets.QLabel(self)
-        label.mouseDoubleClickEvent=self.EventForLable
+        label = GoodQLabel(self)
+        label.clicked.connect(self.EventForLable)
         pix=QtGui.QPixmap(self.Images[len(self.Images)-1][0])
         label.setPixmap(pix.scaled(140,140))
         self.ImageLayout.addWidget(label)
@@ -28,9 +28,9 @@ class Dialog(QtWidgets.QDialog, dialogForm):
         self.TakePic.setEnabled(False)
     def TakeStyleImages(self):
         self.Styles.append(QtWidgets.QFileDialog.getOpenFileName(None,"Укажите изображение стиль",QtCore.QDir.homePath(),"Файл изображения (*.jpg);;Все файлы (*.*)"))
-        label = QtWidgets.QLabel(self)
+        label = GoodQLabel(self)
         self.ImageLayout.addWidget(label)
-        label.mouseDoubleClickEvent=self.EventForLable
+        label.clicked.connect(self.EventForLable)
         pix=QtGui.QPixmap(self.Styles[len(self.Styles)-1][0])
         label.setPixmap(pix.scaled(140,140))
         emptyPix = QtGui.QPixmap(140,140)
@@ -44,7 +44,21 @@ class Dialog(QtWidgets.QDialog, dialogForm):
         self.Labels.append(label)
     
     def EventForLable(self,event):
-        print(self.sender().text())
+        sender = self.sender()
+        for i in self.Labels:
+            if sender == i:
+                i.parent=None
+                i.deleteLater()
+                self.update()
+
     def AddPictures(self):
         self.CountStyleinImages.append([len(self.Images),len(self.Styles)])
         self.TakePic.setEnabled(True)
+
+class GoodQLabel(QtWidgets.QLabel):
+    clicked = pyqtSignal()
+    def __init__(self, parent=None, flags=Qt.WindowFlags()):
+        QtWidgets.QLabel.__init__(parent=parent, flags=flags)
+
+    def mouseDoubleClickEvent(self,event):
+        self.clicked.emit()
