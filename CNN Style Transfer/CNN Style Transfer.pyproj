@@ -27,6 +27,9 @@
     <Compile Include="Content_Loss.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Dialog.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MainCNN.py" />
     <Compile Include="Normalization.py">
       <SubType>Code</SubType>
@@ -34,11 +37,13 @@
     <Compile Include="Style_Loss.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI.py" />
-    <Compile Include="UIDialog.py" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UI.ui" />
+    <Content Include="UI_Dialog.ui" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

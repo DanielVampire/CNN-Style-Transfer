@@ -22,16 +22,16 @@ import os.path
 class ConvolutionNeuralNetwork():
     def __init__(self):
         super().__init__()
-        self.cnn = models.vgg19(pretrained=True).features.to(device).eval()
-        self.cnn_normalization_mean = torch.tensor([0.485, 0.456, 0.406]).to(device)
-        self.cnn_normalization_std = torch.tensor([0.229, 0.224, 0.225]).to(device)
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.cnn = models.vgg19(pretrained=True).features.to(self.device).eval()
+        self.cnn_normalization_mean = torch.tensor([0.485, 0.456, 0.406]).to(self.device)
+        self.cnn_normalization_std = torch.tensor([0.229, 0.224, 0.225]).to(self.device)
         self.content_layers_default = ['conv_15']
         self.style_layers_default = ['conv_1', 'conv_2', 'conv_3', 'conv_4', 'conv_5', 'conv_6', 'conv_7', 'conv_8', 'conv_9', 'conv_10', 'conv_11', 'conv_12', 'conv_13', 'conv_14', 'conv_15', 'conv_16']
 
         self.path = './GeneratedImages/'
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.imsize = 512 if torch.cuda.is_available() else 256
-        self.loader = transforms.Compose([transforms.Resize(imsize), transforms.ToTensor()])
+        self.loader = transforms.Compose([transforms.Resize(self.imsize), transforms.ToTensor()])
         self.unloader = transforms.ToPILImage()
         self.num_steps = 2000
         self.style_weight = 1000000
@@ -41,7 +41,7 @@ class ConvolutionNeuralNetwork():
         image = Image.open(image_name)
         # fake batch dimension required to fit network's input dimensions
         image = self.loader(image).unsqueeze(0)
-        return image.to(device, torch.float)
+        return image.to(self.device, torch.float)
 
     def imshow(self, tensor, title=None):
         image = tensor.cpu().clone()  # we clone the tensor to not do changes on it
@@ -57,7 +57,7 @@ class ConvolutionNeuralNetwork():
         self.cnn = copy.deepcopy(self.cnn)
     
         # normalization module
-        normalization = N.Normalization(self.normalization_mean, self.normalization_std).to(device)
+        normalization = N.Normalization(self.normalization_mean, self.normalization_std).to(self.device)
     
         # just in order to have an iterable access to or list of content/syle
         # losses
@@ -152,11 +152,9 @@ class ConvolutionNeuralNetwork():
         input_img.data.clamp_(0, 1)
     
         return input_img
-    def Run_epoch(self, ContentImage, StyleImage, NumSteps=2000):
+    def Run_epoch(self, ContentImage, StyleImage):
 
         num_files = len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])
-
-        self.num_steps = NumSteps
 
         input_img = ContentImage.clone()
 

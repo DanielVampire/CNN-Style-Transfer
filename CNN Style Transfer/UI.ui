@@ -86,6 +86,19 @@
       <string>Выберите режим</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="TakeMode">
+     <property name="geometry">
+      <rect>
+       <x>44</x>
+       <y>120</y>
+       <width>101</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Применить</string>
+     </property>
+    </widget>
     <widget class="QGroupBox" name="AvtoBox">
      <property name="geometry">
       <rect>
@@ -123,16 +136,6 @@
        <string>Кол-во шагов :</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="NumStepsAvto">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>30</y>
-        <width>61</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QPushButton" name="AvtoBoxButton">
       <property name="geometry">
        <rect>
@@ -146,13 +149,23 @@
        <string>Применить</string>
       </property>
      </widget>
+     <widget class="QSpinBox" name="NumSteps">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>31</y>
+        <width>61</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QFrame" name="frame_2">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>460</y>
+      <y>450</y>
       <width>801</width>
       <height>121</height>
      </rect>
@@ -291,16 +304,28 @@ QPushButton:hover
    <widget class="QLabel" name="Image">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>200</y>
-      <width>47</width>
-      <height>13</height>
+      <x>0</x>
+      <y>0</y>
+      <width>801</width>
+      <height>451</height>
      </rect>
     </property>
     <property name="text">
      <string>TextLabel</string>
     </property>
+    <property name="textFormat">
+     <enum>Qt::AutoText</enum>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
+   <zorder>Image</zorder>
+   <zorder>frame</zorder>
+   <zorder>frame_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -331,6 +356,12 @@ QPushButton:hover
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="TakeImage">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Выбрать изображение</string>
    </property>
@@ -341,6 +372,9 @@ QPushButton:hover
    </property>
   </action>
   <action name="ExitMenu">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Выход</string>
    </property>
