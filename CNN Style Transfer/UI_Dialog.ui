@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>156</width>
-    <height>130</height>
+    <width>444</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,36 +17,9 @@
    <string notr="true">background:rgb(255, 255, 255)</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="1" column="1">
     <layout class="QGridLayout" name="Grid">
-     <item row="1" column="0">
-      <layout class="QHBoxLayout" name="ImageLayout"/>
-     </item>
-     <item row="3" column="1">
-      <widget class="QPushButton" name="UsePics">
-       <property name="text">
-        <string>Выбрать</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="0">
-      <layout class="QHBoxLayout" name="StyleLayout"/>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="AddPic">
-       <property name="text">
-        <string>Добавить изображение</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="TakePic">
-       <property name="text">
-        <string>Выберите изображение</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
       <widget class="QPushButton" name="TakeStyle">
        <property name="enabled">
         <bool>true</bool>
@@ -55,6 +28,58 @@
         <string>Выберите стили</string>
        </property>
       </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="TakePic">
+       <property name="text">
+        <string>Выберите изображение</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="UsePics">
+       <property name="text">
+        <string>Выбрать</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="AddPic">
+       <property name="text">
+        <string>Добавить изображение</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <layout class="QVBoxLayout" name="ImageShow">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="labizo">
+         <property name="text">
+          <string>Изображения</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <property name="indent">
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labstyle">
+         <property name="text">
+          <string>Стили</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
