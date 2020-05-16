@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>d11c3845-4f23-4ca0-b4b3-19bd3bb61066</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>MainCNN.py</StartupFile>
+    <StartupFile>MainWindow.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -27,10 +27,13 @@
     <Compile Include="Content_Loss.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controller.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Dialog.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainCNN.py" />
+    <Compile Include="MainWindow.py" />
     <Compile Include="Normalization.py">
       <SubType>Code</SubType>
     </Compile>
