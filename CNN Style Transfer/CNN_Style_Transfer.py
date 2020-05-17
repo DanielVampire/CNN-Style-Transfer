@@ -17,7 +17,7 @@ import Content_Loss as CL
 import Style_Loss as SL
 import Normalization as N
 
-import os.path
+
 
 class ConvolutionNeuralNetwork():
     def __init__(self):
@@ -32,15 +32,9 @@ class ConvolutionNeuralNetwork():
         self.content_layers_default = ['conv_15']
         self.style_layers_default = ['conv_1', 'conv_2', 'conv_3', 'conv_4', 'conv_5', 'conv_6', 'conv_7', 'conv_8', 'conv_9', 'conv_10', 'conv_11', 'conv_12', 'conv_13', 'conv_14', 'conv_15', 'conv_16']
        
-        self.Model = None
-        self.Style_Loss = None
-        self.Content_Loss = None
-        self.Normalization = None
-        self.Optimizer = None
         self.ContentImage = None
         self.StyleImage = None
 
-        self.path = './GeneratedImages/'
         self.num_steps = 2000
         self.style_weight = 1000000
         self.content_weight = 1
@@ -51,15 +45,15 @@ class ConvolutionNeuralNetwork():
         self.StyleImage = StyleImage
 
     def InitializeNormalization(self):
-        self.Normalization = N.Normalization(self.cnn_normalization_mean, self.cnn_normalization_std).to(self.device)
+        return N.Normalization(self.cnn_normalization_mean, self.cnn_normalization_std).to(self.device)
 
     def InitializeModelAndLosses(self):
         self.cnn = copy.deepcopy(self.cnn)
     
-        self.Content_Loss = []
-        self.Style_Loss = []
+        Content_Loss = []
+        Style_Loss = []
     
-        self.Model = nn.Sequential(self.Normalization)
+        Model = nn.Sequential(self.InitializeNormalization())
     
         i = 0 
         for layer in self.cnn.children():
@@ -77,43 +71,45 @@ class ConvolutionNeuralNetwork():
             else:
                 raise RuntimeError('Unrecognized layer: {}'.format(layer.__class__.__name__))
     
-            self.Model.add_module(name, layer)
+            Model.add_module(name, layer)
     
             if name in self.content_layers_default:
-                target = self.Model(self.ContentImage).detach()
+                target = Model(self.ContentImage).detach()
                 content_loss = CL.Content_Loss(target)
-                self.Model.add_module("content_loss_{}".format(i), content_loss)
-                self.Content_Loss.append(content_loss)
+                Model.add_module("content_loss_{}".format(i), content_loss)
+                Content_Loss.append(content_loss)
     
             if name in self.style_layers_default:
-                target_feature = self.Model(self.StyleImage).detach()
+                target_feature = Model(self.StyleImage).detach()
                 style_loss = SL.Style_Loss(target_feature)
-                self.Model.add_module("style_loss_{}".format(i), style_loss)
-                self.Style_Loss.append(style_loss)
+                Model.add_module("style_loss_{}".format(i), style_loss)
+                Style_Loss.append(style_loss)
 
-    def InitializeOptimizer(self):
-        inputImage = self.ContentImage.clone()
-        self.Optimizer = optim.LBFGS([inputImage.requires_grad_()])
+        return Model,Style_Loss,Content_Loss
+
+    def InitializeOptimizer(self, Image):
+        return optim.LBFGS([Image.requires_grad_()])
 
     def Run_epoch(self):
 
-        num_files = len([f for f in os.listdir(self.path) if os.path.isfile(os.path.join(self.path, f))])
 
-        input_img = self.ContentImage.clone()
+        input_img = self.ContentImage
+        model,style_loss,content_loss = self.InitializeModelAndLosses()
+        Optimazer = self.InitializeOptimizer(input_img)
         print('Optimizing..')
         run = [0]
         while run[0] <= self.num_steps:
             def closure():
                 input_img.data.clamp_(0, 1)
     
-                self.Optimizer.zero_grad()
-                self.Model(input_img)
+                Optimazer.zero_grad()
+                model(input_img)
                 style_score = 0
                 content_score = 0
     
-                for sl in self.Style_Loss:
+                for sl in style_loss:
                     style_score += sl.loss
-                for cl in self.Content_Loss:
+                for cl in content_loss:
                     content_score += cl.loss
     
                 style_score *= self.style_weight
@@ -126,7 +122,8 @@ class ConvolutionNeuralNetwork():
                 
                 return style_score + content_score
                 
-            self.Optimizer.step(closure)
+            Optimazer.step(closure)
 
         input_img.data.clamp_(0, 1)
+
         return input_img

@@ -5,62 +5,73 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import PyQt5.uic as uic
 
 formMain = uic.loadUiType("UI.ui")[0]
+
 class MainWindow(QtWidgets.QMainWindow,formMain):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self,None)
         self.setupUi(self)
-        self.AvtoBox.setVisible(False)
-        self.frame_2.setVisible(False)
         self.Images=[]
-        self.AvtoRadioButton.clicked.connect(self.ARB_Openbox)
-        self.AvtoBoxButton.clicked.connect(self.AvtoModeTake)
-        self.ManualRadioButton.clicked.connect(self.ManualMode)
-        self.OneStepButton.clicked.connect(self.OneStep)
-        self.TenStepButton.clicked.connect(self.TenStep)
-        self.HundredStepButton.clicked.connect(self.HundredStep)
-        self.ThousandStepButton.clicked.connect(self.ThousandStep)
-
-        self.TakeMode.clicked.connect(self.ConfirmMode)
+        self.GenerateImage=None
+        self.Image.setScaledContents(True)
+        self.frame.setVisible(False)
         self.TakeImage.triggered.connect(self.TakeImages)
+        self.NumStepButton.clicked.connect(self.TakeNumSteps)
+        self.SaveImageButton.clicked.connect(self.Save)
+        self.ExitButton.clicked.connect(self.Exit)
+        self.CancelButton.clicked.connect(self.Cancel)
+        self.ExitMenu.triggered.connect(self.Exit)
         self.Control = Controller()
 
-    def resizeEvent(self,event):
-        self.frame.setGeometry(self.width()-181,0,181,self.height())
-        self.frame_2.setGeometry(0,self.height()-141,self.width(),121)
-        self.Image.setGeometry(0, 0, self.width(), (self.height() - self.frame_2.height()))
-        event.accept()
-    def ARB_Openbox(self):
-        self.AvtoBox.setVisible(True)
-
-    def AvtoModeTake(self):
-        QtWidgets.QMessageBox.information(self,'Message', f'Автоматический режим выбран, число шагов: {self.NumSteps.value()}')
-        self.AvtoBox.setVisible(False)
-        self.Control.SetNumSteps(self.NumSteps.value())
-
-    def ManualMode(self):
-        QtWidgets.QMessageBox.information(self,'Message', 'Выбран ручной режим')
-
     def ConfirmMode(self):
-        self.frame.setVisible(False)
-        self.frame_2.setVisible(True)
-        self.Image.setPixmap(QtGui.QPixmap(self.Images[0][0]))
-        self.Control.InitializeNetwork(self.Images)
+        if len(self.Images) == 0:
+            return
+        self.Image.setPixmap(QtGui.QPixmap(self.Images[0][0]).scaled(512,512))
+        self.Control.InitializeNetworkImages(self.Images)
+        self.Image.setVisible(True)
+        self.frame.setVisible(True)
+        self.NumStepButton.setVisible(True)
+        self.NumStepsBox.setVisible(True)
+        self.NumStepsLabel.setVisible(True)
+        self.SaveImageButton.setVisible(False)
+        self.ExitButton.setVisible(False)
+        self.CancelButton.setVisible(False)
+
     def TakeImages(self):
         dial = Dialog(self)
         dial.show()
 
-    def OneStep(self):
-        self.Control.SetNumSteps(1)
-        self.Control.RunNetwork()
-    def TenStep(self):
-        self.Control.SetNumSteps(10)
-        self.Control.RunNetwork()
-    def HundredStep(self):
-        self.Control.SetNumSteps(100)
-        self.Control.RunNetwork()
-    def ThousandStep(self):
-        self.Control.SetNumSteps(1000)
-        self.Control.RunNetwork()
+    def TakeNumSteps(self):
+        self.Control.Network.num_steps = self.NumStepsBox.value()
+        self.NumStepButton.setVisible(False)
+        self.NumStepsBox.setVisible(False)
+        self.NumStepsLabel.setVisible(False)
+        self.SaveImageButton.setVisible(True)
+        self.ExitButton.setVisible(True)
+        self.CancelButton.setVisible(True)
+        self.GenerateImage = self.Control.ImageProc.image_show(self.Control.Network.Run_epoch())
+        self.Image.setPixmap(QtGui.QPixmap.fromImage(self.GenerateImage))
+
+    def Save(self):
+        self.Control.ImageProc.SaveImage(self.GenerateImage)
+        self.GenerateImage = None
+        self.Image.setVisible(False)
+        self.frame.setVisible(False)
+        QtWidgets.QMessageBox.information(self,"Информация","Изображение сохранено в папку GeneratedImages")
+        self.ConfirmMode()
+
+    def Cancel(self):
+        self.GenerateImage = None
+        self.Image.setVisible(False)
+        self.frame.setVisible(False)
+        self.ConfirmMode()
+
+    def Exit(self):
+        if QtWidgets.QMessageBox.warning(self,"Предупреждение",
+                                         "Приложение закроется без дальнейшего продолжения.\nВас это устраивает?",
+                                         QtWidgets.QMessageBox.Yes,QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.No:
+            return
+        self.close()
+
 app=QtWidgets.QApplication(sys.argv)
 
 Window = MainWindow()

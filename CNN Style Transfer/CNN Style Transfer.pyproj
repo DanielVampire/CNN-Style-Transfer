@@ -33,6 +33,9 @@
     <Compile Include="Dialog.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ImageProcessor.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MainWindow.py" />
     <Compile Include="Normalization.py">
       <SubType>Code</SubType>

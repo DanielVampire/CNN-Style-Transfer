@@ -23,12 +23,12 @@ class Dialog(QtWidgets.QWidget, dialogForm):
 
         self.ShowImgStyle.setEnabled(False)
         self.ImageCounter = 0
-    def resizeEvent(self,event):
-        event.accept()
 
     def DragImageToMW(self):
         self.parent().Images=self.Images
+        self.parent().ConfirmMode()
         self.close()
+
     def ShowContent(self):
         if QtWidgets.QMessageBox.warning(self,"Предупреждение!",
                                          "Если вы выведете изображение, то не сможете добавлять новые стили",
@@ -39,6 +39,7 @@ class Dialog(QtWidgets.QWidget, dialogForm):
             self.TakePic.setEnabled(True)
             self.AddPic.setEnabled(False)
             self.ShowImages()
+
     def TakePicture(self):
         t= list(QtWidgets.QFileDialog.getOpenFileName(None,"Укажите изображение",QtCore.QDir.homePath(),"Файл изображения (*.jpg);;Все файлы (*.*)"))
         if t[0] == "":
@@ -48,6 +49,7 @@ class Dialog(QtWidgets.QWidget, dialogForm):
         self.Images.append(t)
         self.TakeStyle.setEnabled(True)
         self.TakePic.setEnabled(False)
+
     def TakeStyleImages(self):
         for i in self.Images:
             if (len(self.Images)-1) == self.Images.index(i):
@@ -62,6 +64,7 @@ class Dialog(QtWidgets.QWidget, dialogForm):
         self.AddPic.setEnabled(True)
         self.ShowImgStyle.setEnabled(True)
         self.UsePics.setEnabled(True)
+
     def ShowImages(self):
         Hlayout = QtWidgets.QHBoxLayout(self)
         self.labstyle.setVisible(True)
@@ -85,6 +88,10 @@ class Dialog(QtWidgets.QWidget, dialogForm):
         self.ImageCounter+=1
         Hlayout.addWidget(Button)
         self.ImageShow.addLayout(Hlayout)
+        self.TakeStyle.setEnabled(False)
+        self.TakePic.setEnabled(True)
+        self.AddPic.setEnabled(False)
+
     def DeleteImages(self,checked,Layout):
         for i in range(self.ImageShow.count()):
             obj = self.ImageShow.itemAt(i)
@@ -116,6 +123,7 @@ class Dialog(QtWidgets.QWidget, dialogForm):
             labI.setVisible(False)
             labS.setVisible(False)
         self.ImageCounter=0
+
     def EventForLableImages(self, VLayout,event):
         restart=True
         while restart:
