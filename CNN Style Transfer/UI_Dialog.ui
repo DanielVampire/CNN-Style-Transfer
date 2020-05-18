@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Choose Images</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background:rgb(255, 255, 255)</string>
@@ -22,7 +22,14 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="1">
     <layout class="QGridLayout" name="Grid">
-     <item row="5" column="0">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="AddPic">
+       <property name="text">
+        <string>Добавить изображение</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
       <widget class="QPushButton" name="UsePics">
        <property name="statusTip">
         <string/>
@@ -35,65 +42,13 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
-      <widget class="QPushButton" name="AddPic">
-       <property name="text">
-        <string>Добавить изображение</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QPushButton" name="ShowImgStyle">
-       <property name="text">
-        <string>Показать изображение</string>
-       </property>
-       <property name="autoRepeat">
-        <bool>false</bool>
-       </property>
-       <property name="autoExclusive">
-        <bool>false</bool>
-       </property>
-       <property name="autoRepeatDelay">
-        <number>300</number>
-       </property>
-       <property name="flat">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
+     <item row="1" column="0">
       <widget class="QPushButton" name="TakeStyle">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="text">
-        <string>Выберите стили</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="TakePic">
-       <property name="statusTip">
-        <string/>
-       </property>
-       <property name="whatsThis">
-        <string/>
-       </property>
-       <property name="text">
-        <string>Выберите изображение</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="0">
-      <widget class="QTextEdit" name="textEdit">
-       <property name="html">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;	Попробовать с выводом изображения поколупаться&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Значитс так&lt;br /&gt;	мы создаём ж лаяут и добавляем его в другой лаяут. По идее мы можем обращаться к чаялду последнему по индексу и в него записывать новые виджеты.&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Стоит попробовать. Если прокатит, будет топово.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Добавить стили</string>
        </property>
       </widget>
      </item>

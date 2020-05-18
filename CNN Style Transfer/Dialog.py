@@ -10,35 +10,25 @@ class Dialog(QtWidgets.QWidget, dialogForm):
         super().__init__(parent,QtCore.Qt.Window)
         self.setupUi(self)
         self.Images=[]
-        self.TakePic.clicked.connect(self.TakePicture)
+        self.LayoutImages = None
         self.TakeStyle.clicked.connect(self.TakeStyleImages)
-        self.AddPic.clicked.connect(self.AddPictures)
-        self.ShowImgStyle.clicked.connect(self.ShowContent)
+        self.AddPic.clicked.connect(self.TakePicture)
         self.UsePics.clicked.connect(self.DragImageToMW)
         self.TakeStyle.setEnabled(False)
-        self.AddPic.setEnabled(False)
+        self.AddPic.setEnabled(True)
         self.labstyle.setVisible(False)
         self.labizo.setVisible(False)
         self.UsePics.setEnabled(False)
 
-        self.ShowImgStyle.setEnabled(False)
+        self.ImageSize = None
+        self.StyleSize = None
         self.ImageCounter = 0
+        self.StyleCounter = 1
 
     def DragImageToMW(self):
         self.parent().Images=self.Images
         self.parent().ConfirmMode()
         self.close()
-
-    def ShowContent(self):
-        if QtWidgets.QMessageBox.warning(self,"Предупреждение!",
-                                         "Если вы выведете изображение, то не сможете добавлять новые стили",
-                                         QtWidgets.QMessageBox.Ok,QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.No:
-            pass
-        else:
-            self.TakeStyle.setEnabled(False)
-            self.TakePic.setEnabled(True)
-            self.AddPic.setEnabled(False)
-            self.ShowImages()
 
     def TakePicture(self):
         t= list(QtWidgets.QFileDialog.getOpenFileName(None,"Укажите изображение",QtCore.QDir.homePath(),"Файл изображения (*.jpg);;Все файлы (*.*)"))
@@ -48,7 +38,8 @@ class Dialog(QtWidgets.QWidget, dialogForm):
         t.pop(1)
         self.Images.append(t)
         self.TakeStyle.setEnabled(True)
-        self.TakePic.setEnabled(False)
+        self.ShowImage()
+        self.AddPic.setEnabled(False)
 
     def TakeStyleImages(self):
         for i in self.Images:
@@ -61,36 +52,48 @@ class Dialog(QtWidgets.QWidget, dialogForm):
                 t=str(t[0])
                 i.append(t)
                 break
-        self.AddPic.setEnabled(True)
-        self.ShowImgStyle.setEnabled(True)
         self.UsePics.setEnabled(True)
-
-    def ShowImages(self):
-        Hlayout = QtWidgets.QHBoxLayout(self)
+        self.ShowStyle()
+        self.AddPic.setEnabled(True)
+    
+    def ShowImage(self):
+        if self.ImageShow.count() > 1:
+            Button = QtWidgets.QPushButton(self)
+            Button.setText("X")
+            Button.setMinimumSize(30,140)
+            Button.setMaximumSize(30,140)
+            HLayout = self.LayoutImages
+            Button.clicked.connect(lambda checked : self.DeleteImages( checked, HLayout) )
+            self.LayoutImages.addWidget(Button)
+            self.ImageCounter+=1
+        self.LayoutImages = QtWidgets.QHBoxLayout(self)
         self.labstyle.setVisible(True)
         self.labizo.setVisible(True)
-        Button = QtWidgets.QPushButton(self)
-        Button.setText("X")
-        Button.setMinimumSize(30,140)
-        Button.setMaximumSize(30,140)
-        Button.clicked.connect(lambda checked : self.DeleteImages( checked, Hlayout) )
         for i in range(self.ImageCounter, len(self.Images)):
-            for j in self.Images[i]:
+            Image = QtWidgets.QLabel(self)
+            pix = QtGui.QPixmap(self.Images[i][0])
+            self.ImageSize = pix.size()
+            Image.setPixmap(pix.scaled(140,140))
+            self.LayoutImages.addWidget(Image)
+            text = QtWidgets.QLabel(self.Images[i][0])
+            text.setVisible(False)
+            self.LayoutImages.addWidget(text)
+        self.ImageShow.addLayout(self.LayoutImages)
+        self.StyleCounter=1
+
+    def ShowStyle(self):
+        for i in range(self.ImageCounter, len(self.Images)):
+            for j in range(self.StyleCounter,len(self.Images[i])):
                 Image = QtWidgets.QLabel(self)
-                pix = QtGui.QPixmap(j)
+                pix = QtGui.QPixmap(self.Images[i][j])
+                self.StyleSize = pix.size()
+                if self.ImageSize != self.StyleSize:
+                    QtWidgets.QMessageBox.warning(self,"Ошибка","Изображение и стили должны быть одного размера")
+                    self.Images[i].remove(self.Images[i][j])
+                    return
                 Image.setPixmap(pix.scaled(140,140))
-                Hlayout.addWidget(Image)
-                per = self.Images[i]
-                if per.index(j) == 0:
-                    text = QtWidgets.QLabel(j)
-                    text.setVisible(False)
-                    Hlayout.addWidget(text)
-        self.ImageCounter+=1
-        Hlayout.addWidget(Button)
-        self.ImageShow.addLayout(Hlayout)
-        self.TakeStyle.setEnabled(False)
-        self.TakePic.setEnabled(True)
-        self.AddPic.setEnabled(False)
+                self.LayoutImages.addWidget(Image)
+        self.StyleCounter+=1
 
     def DeleteImages(self,checked,Layout):
         for i in range(self.ImageShow.count()):
@@ -122,44 +125,4 @@ class Dialog(QtWidgets.QWidget, dialogForm):
             labS = obj.itemAt(1).widget()
             labI.setVisible(False)
             labS.setVisible(False)
-        self.ImageCounter=0
-
-    def EventForLableImages(self, VLayout,event):
-        restart=True
-        while restart:
-            print(self.ImageLayout.count())
-            if self.ImageLayout.count() == 0:
-                restart=False
-            for j in range(self.ImageLayout.count()):
-                obj = self.ImageLayout.takeAt(j)
-                print(obj.widget())
-                if obj == None:
-                    restart=False
-                    break
-                if obj == VLayout:
-                    for i in self.Images:
-                        elem = obj.takeAt(1).widget()
-                        if i[0] == elem.text():
-                            self.ImageLayout.removeItem(obj)
-                            self.Images.remove(i)
-                            print(self.ImageLayout.count())
-                            break
-                    break
-                elif type(obj.widget()) == type(QtWidgets.QLabel()):
-                    self.ImageLayout.removeItem(obj)
-                    break
-                elif type(obj) == type(QtWidgets.QVBoxLayout()):
-                    restart = False
-                    break
-        self.update()
-                
-    def EventForLableStyles(self, VLayout,event):
-        lb_1 = VLayout.children[0]
-        lb_2 = VLayout.children[1]
-        self.Labels.remove(lb_1)
-        lb_1.deleteLater()
-
-    def AddPictures(self):
-        self.TakePic.setEnabled(True)
-        self.TakeStyle.setEnabled(False)
-        self.ShowImages()
+        self.ImageCounter-=1

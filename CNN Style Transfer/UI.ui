@@ -11,10 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Neural Style Transfer</string>
   </property>
   <property name="tabShape">
-   <enum>QTabWidget::Triangular</enum>
+   <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -54,6 +54,26 @@
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMaximumSize</enum>
+      </property>
+      <item>
+       <widget class="QPushButton" name="ImagesTake">
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Выбрать изображения</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
      <widget class="QFrame" name="frame">
@@ -157,15 +177,14 @@ QPushButton
      <string>Файл</string>
     </property>
     <addaction name="TakeImage"/>
-    <addaction name="SaveImage"/>
     <addaction name="ExitMenu"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
      <string>Помощь</string>
     </property>
-    <addaction name="Help"/>
-    <addaction name="Education"/>
+    <addaction name="Ref"/>
+    <addaction name="HelpBut"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -195,14 +214,14 @@ QPushButton
     <string>Выход</string>
    </property>
   </action>
-  <action name="Help">
+  <action name="Ref">
    <property name="text">
     <string>Справка</string>
    </property>
   </action>
-  <action name="Education">
+  <action name="HelpBut">
    <property name="text">
-    <string>Обучение</string>
+    <string>Помощь</string>
    </property>
   </action>
  </widget>

@@ -40,6 +40,9 @@
     <Compile Include="Normalization.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ProgressBarDialog.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Style_Loss.py">
       <SubType>Code</SubType>
     </Compile>
@@ -48,6 +51,7 @@
     <InterpreterReference Include="Global|PythonCore|3.7" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ProgressBar.ui" />
     <Content Include="UI.ui" />
     <Content Include="UI_Dialog.ui" />
   </ItemGroup>

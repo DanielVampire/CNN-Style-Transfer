@@ -17,8 +17,6 @@ import Content_Loss as CL
 import Style_Loss as SL
 import Normalization as N
 
-
-
 class ConvolutionNeuralNetwork():
     def __init__(self):
         super().__init__()
@@ -92,7 +90,6 @@ class ConvolutionNeuralNetwork():
 
     def Run_epoch(self):
 
-
         input_img = self.ContentImage
         model,style_loss,content_loss = self.InitializeModelAndLosses()
         Optimazer = self.InitializeOptimizer(input_img)
@@ -119,7 +116,7 @@ class ConvolutionNeuralNetwork():
                 loss.backward()
     
                 run[0] += 1
-                
+
                 return style_score + content_score
                 
             Optimazer.step(closure)
