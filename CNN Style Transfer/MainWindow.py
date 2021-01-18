@@ -3,22 +3,20 @@ from Controller import Controller
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 import PyQt5.uic as uic
+
 from ProgressBarDialog import ProgressBarDialog
+from MainWindowUi import Ui_MainWindow
 
-formMain = uic.loadUiType("UI.ui")[0]
-
-class MainWindow(QtWidgets.QMainWindow,formMain):
-    def __init__(self):
-
-        QtWidgets.QMainWindow.__init__(self,None)
+class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
+    def __init__(self,parent = None):
+        QtWidgets.QMainWindow.__init__(self)
         self.setupUi(self)
-
+        self.setWindowFlags(QtCore.Qt.CustomizeWindowHint)
         self.Images=[]
         self.GenerateImage=None
 
         self.Image.setScaledContents(True)
 
-        self.Image.setVisible(False)
         self.frame.setVisible(False)
 
         self.TakeImage.triggered.connect(self.TakeImages)
@@ -34,14 +32,25 @@ class MainWindow(QtWidgets.QMainWindow,formMain):
         self.ExitMenu.triggered.connect(self.Exit)
 
         self.Control = Controller()
-    
+
+        QtWidgets.QMessageBox.information(self,"Device",f'Your calculations devise is {self.Control.Network.calculationDevice}')
+    def mousePressEvent(self, event):
+        self.offset = event.pos()
+    def mouseMoveEvent(self, event):
+        x=event.globalX()
+        y=event.globalY()
+        x_w = self.offset.x()
+        y_w = self.offset.y()
+        self.move(x-x_w, y-y_w)  
     def Help(self):
         QtWidgets.QMessageBox.information(self,"Помощь","Для правильной работы с программой необходимо выбрать изображение"
                                           +" и стили к нему с одинаковым разрешением (размером).\nДля этого в пункте меню"
                                           +" выберите Выбрать изображение или нажмите на кнопку по середине экрана.\nДалее"
                                           +" выберите изображения и стили к ним, они будут появляться слева от кнопок."
-                                          +"\nДалее нажмите кнопку выбрать.\nПосле этого укажите количество шагов,"
-                                          +" которые вы хотите чтоб программа выполнила и нажмите принять."
+                                          +"\nДалее нажмите кнопку применить.\nДалее необходимо указать степень смешивания,"
+                                          +" стиля на изображение и нажмать принять.\n"
+                                          +"Степень смешивания указывается от 1 до 9999 (желательно указать число, до 2000, а лучше до 500)"
+                                          +"\n Степень смешивания задает количество итераций программы - чем больше, тем стиль сильнее выражается"
                                           +"\nПрограмма обработает ваше изображение и выведет его на экран.")
 
     def Reference(self):
@@ -55,6 +64,7 @@ class MainWindow(QtWidgets.QMainWindow,formMain):
     def ConfirmMode(self):
 
         if len(self.Images) == 0:
+            self.ImagesTake.setVisible(True)
             return
 
         self.Image.setPixmap(QtGui.QPixmap(self.Images[0][0]).scaled(512,512))
@@ -73,7 +83,17 @@ class MainWindow(QtWidgets.QMainWindow,formMain):
 
         dial = Dialog(self)
         dial.show()
-
+        stop=False
+        while not stop:
+            for i in  range(self.verticalLayout.count()):
+                layoutItem = self.verticalLayout.itemAt(i);
+                if (layoutItem.spacerItem()):
+                    self.verticalLayout.removeItem(layoutItem);
+                    del layoutItem
+                    break
+                if i+1 == self.verticalLayout.count():
+                    stop=True
+        self.Image.setVisible(False)
         self.ImagesTake.setVisible(False)
 
     def Loading(self):
@@ -81,7 +101,9 @@ class MainWindow(QtWidgets.QMainWindow,formMain):
         Bar = ProgressBarDialog(self)
 
         geo = self.geometry()
-        Bar.setGeometry(((geo.x()+geo.width())/2.5)+288,((geo.y()+geo.height())/2)+62,265,62)
+        x=geo.x()+((geo.width()/2)-132)
+        y=geo.y()+((geo.height()/2)-31)
+        Bar.setGeometry(x, y, 265, 62)
         Bar.show()
 
         self.TakeNumSteps()
@@ -90,7 +112,7 @@ class MainWindow(QtWidgets.QMainWindow,formMain):
 
     def TakeNumSteps(self):
 
-        self.Control.Network.num_steps = self.NumStepsBox.value()
+        self.Control.SetNumSteps(self.NumStepsBox.value())
 
         self.NumStepButton.setVisible(False)
         self.NumStepsBox.setVisible(False)
@@ -102,14 +124,14 @@ class MainWindow(QtWidgets.QMainWindow,formMain):
 
         QtWidgets.QMessageBox.information(self,"Информация","Запуск алгоритма преобразования")
 
-        self.GenerateImage = self.Control.ImageProc.image_show(self.Control.Network.Run_epoch())
+        self.GenerateImage = self.Control.RunNetwork()
         self.Image.setPixmap(QtGui.QPixmap.fromImage(self.GenerateImage))
 
         self.frame.setVisible(True)
 
     def Save(self):
 
-        self.Control.ImageProc.SaveImage(self.GenerateImage)
+        self.Control.SaveImage(self.GenerateImage)
         self.GenerateImage = None
 
         self.Image.setVisible(False)
@@ -119,8 +141,6 @@ class MainWindow(QtWidgets.QMainWindow,formMain):
 
         self.ConfirmMode()
 
-        self.ImagesTake.setVisible(True)
-
     def Cancel(self):
 
         self.GenerateImage = None
@@ -129,8 +149,6 @@ class MainWindow(QtWidgets.QMainWindow,formMain):
         self.frame.setVisible(False)
 
         self.ConfirmMode()
-
-        self.ImagesTake.setVisible(True)
 
     def Exit(self):
 

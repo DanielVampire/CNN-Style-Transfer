@@ -6,20 +6,36 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>783</width>
-    <height>672</height>
+    <width>1031</width>
+    <height>692</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Neural Style Transfer</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow{
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(50, 50, 50, 255));
+}
+QMenuBar{
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(50, 50, 50, 255));
+	font: 75 10pt &quot;Segoe Script&quot;;
+}
+QMenu{
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(50, 50, 50, 255));
+	font: 75 10pt &quot;Segoe Script&quot;;
+}</string>
+  </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="leftMargin">
      <number>1</number>
@@ -34,6 +50,19 @@
      <number>1</number>
     </property>
     <item>
+     <spacer name="Space2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
      <widget class="QLabel" name="Image">
       <property name="maximumSize">
        <size>
@@ -41,8 +70,15 @@
         <height>980</height>
        </size>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel{
+	font: 75 22pt &quot;Segoe Script&quot;;
+}</string>
+      </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>Добро пожаловать
+ Для того, чтобы начать работу выберите изображения
+Нажав кнопку ниже</string>
       </property>
       <property name="textFormat">
        <enum>Qt::AutoText</enum>
@@ -57,23 +93,72 @@
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="spacing">
+       <number>4</number>
+      </property>
       <property name="sizeConstraint">
        <enum>QLayout::SetMaximumSize</enum>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
       </property>
       <item>
        <widget class="QPushButton" name="ImagesTake">
         <property name="maximumSize">
          <size>
-          <width>150</width>
-          <height>30</height>
+          <width>410</width>
+          <height>50</height>
          </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+	font: 24pt &quot;Segoe Script&quot;;
+	text-decoration: underline;
+	color:  rgb(227, 0, 3);
+	border: 1px;
+}
+QPushButton:hover{
+	color: rgb(0, 157, 0);
+}
+</string>
         </property>
         <property name="text">
          <string>Выбрать изображения</string>
         </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
      </layout>
+    </item>
+    <item>
+     <spacer name="Space1">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Expanding</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>1</width>
+        <height>150</height>
+       </size>
+      </property>
+     </spacer>
     </item>
     <item>
      <widget class="QFrame" name="frame">
@@ -84,11 +169,10 @@
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true">background: rgb(255, 255, 255);
-QPushButton
-{
-	height: 30;
-}</string>
+       <string notr="true">QFrame{
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(50, 50, 50, 255));
+}
+</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
@@ -97,8 +181,31 @@ QPushButton
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>20</number>
+       </property>
+       <property name="leftMargin">
+        <number>10</number>
+       </property>
+       <property name="bottomMargin">
+        <number>9</number>
+       </property>
        <item>
         <widget class="QPushButton" name="ExitButton">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+	font: 16pt &quot;Segoe Script&quot;;
+	color:  rgb(227, 0, 3);
+	border: 1px;
+}
+QPushButton:hover{
+	text-decoration: underline;
+	color: rgb(0, 157, 0);
+}</string>
+         </property>
          <property name="text">
           <string>Выйти</string>
          </property>
@@ -106,6 +213,20 @@ QPushButton
        </item>
        <item>
         <widget class="QPushButton" name="CancelButton">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+	font: 16pt &quot;Segoe Script&quot;;
+	color:  rgb(227, 0, 3);
+	border: 1px;
+}
+QPushButton:hover{
+	text-decoration: underline;
+	color: rgb(0, 157, 0);
+}</string>
+         </property>
          <property name="text">
           <string>Не сохранять</string>
          </property>
@@ -115,11 +236,47 @@ QPushButton
         <widget class="QLabel" name="NumStepsLabel">
          <property name="font">
           <font>
+           <family>Segoe Script</family>
            <pointsize>14</pointsize>
+           <weight>9</weight>
+           <italic>false</italic>
+           <bold>false</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame{
+	
+	font: 75 14pt &quot;Segoe Script&quot;;
+	color:rgb(0, 0, 0);
+	background: rgba(255, 255, 255, 0);
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>3</number>
+         </property>
+         <property name="midLineWidth">
+          <number>0</number>
          </property>
          <property name="text">
           <string>Укажите количество итераций (шагов)</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>false</bool>
+         </property>
+         <property name="indent">
+          <number>-1</number>
+         </property>
+         <property name="openExternalLinks">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -127,8 +284,20 @@ QPushButton
         <widget class="QSpinBox" name="NumStepsBox">
          <property name="font">
           <font>
+           <family>Segoe Script</family>
            <pointsize>14</pointsize>
+           <weight>9</weight>
+           <italic>false</italic>
+           <bold>false</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QSpinBox{
+	font: 75 14pt &quot;Segoe Script&quot;;
+	color: rgb(0, 0, 0);
+	background: rgba(255, 255, 255, 0);
+}
+</string>
          </property>
          <property name="minimum">
           <number>1</number>
@@ -143,6 +312,20 @@ QPushButton
        </item>
        <item>
         <widget class="QPushButton" name="NumStepButton">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+	font: 16pt &quot;Segoe Script&quot;;
+	color:  rgb(227, 0, 3);
+	border: 1px;
+}
+QPushButton:hover{
+	text-decoration: underline;
+	color: rgb(0, 157, 0);
+}</string>
+         </property>
          <property name="text">
           <string>Применить</string>
          </property>
@@ -150,8 +333,19 @@ QPushButton
        </item>
        <item>
         <widget class="QPushButton" name="SaveImageButton">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="styleSheet">
-          <string notr="true">background: rgb(85, 255, 127)</string>
+          <string notr="true">QPushButton{
+	font: 16pt &quot;Segoe Script&quot;;
+	color:  rgb(227, 0, 3);
+	border: 1px;
+}
+QPushButton:hover{
+	text-decoration: underline;
+	color: rgb(0, 157, 0);
+}</string>
          </property>
          <property name="text">
           <string>Сохранить</string>
@@ -168,11 +362,14 @@ QPushButton
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>783</width>
-     <height>21</height>
+     <width>1031</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
     <property name="title">
      <string>Файл</string>
     </property>
@@ -189,7 +386,6 @@ QPushButton
    <addaction name="menu"/>
    <addaction name="menu_2"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="TakeImage">
    <property name="checkable">
     <bool>false</bool>

@@ -5,26 +5,35 @@ from PIL.ImageQt import ImageQt
 import torchvision.transforms as transforms
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os.path
+import os
 
 class ImageProcessor():
     def __init__(self):
-        self.imsize = 512 if torch.cuda.is_available() else 256
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.loader = transforms.Compose([transforms.Resize(self.imsize), transforms.ToTensor()])
-        self.unloader = transforms.ToPILImage()
+        self.SizeImage = 512 if torch.cuda.is_available() else 256
+        self.calculationDevice = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.toTensor = transforms.Compose([transforms.Resize(self.SizeImage), transforms.ToTensor()])
+        self.toPilImage = transforms.ToPILImage()
+
         self.path = './GeneratedImages/'
+
+        if os.path.isdir('./GeneratedImages/'):
+            self.path = self.path
+        else:
+            os.mkdir(self.path)
+            self.path = self.path
+
         self.num_files = len([f for f in os.listdir(self.path) if os.path.isfile(os.path.join(self.path, f))])
 
-    def image_loader(self, image_name):
-        image = Image.open(image_name)
-        image = self.loader(image).unsqueeze(0)
+    def imageToTensor(self, imagePath):
+        Img = Image.open(imagePath)
+        Img = self.toTensor(Img).unsqueeze(0)
 
-        return image.to(self.device, torch.float)
+        return Img.to(self.calculationDevice, torch.float)
 
-    def image_show(self, tensore):
+    def tensorToImage(self, tensore):
         Img = tensore.cpu().clone()
         Img = Img.squeeze(0)
-        Img = self.unloader(Img)
+        Img = self.toPilImage(Img)
         Img = ImageQt(Img)
         return Img
 

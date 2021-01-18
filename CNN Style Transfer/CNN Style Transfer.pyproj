@@ -13,6 +13,9 @@
     <RootNamespace>CNN Style Transfer</RootNamespace>
     <IsWindowsApplication>False</IsWindowsApplication>
     <InterpreterId>Global|PythonCore|3.7</InterpreterId>
+    <TestFramework>pytest</TestFramework>
+    <UnitTestPattern>test*.py</UnitTestPattern>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,7 +26,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CNN_Style_Transfer.py" />
+    <Compile Include="Neural_Network.py" />
     <Compile Include="Content_Loss.py">
       <SubType>Code</SubType>
     </Compile>
@@ -33,27 +36,25 @@
     <Compile Include="Dialog.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DialogUi.py" />
     <Compile Include="ImageProcessor.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainWindow.py" />
+    <Compile Include="MainWindowUi.py" />
     <Compile Include="Normalization.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ProgressBarDialog.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ProgressBarUi.py" />
     <Compile Include="Style_Loss.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.7" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ProgressBar.ui" />
-    <Content Include="UI.ui" />
-    <Content Include="UI_Dialog.ui" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

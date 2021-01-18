@@ -3,9 +3,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import PyQt5.uic as uic
 import functools
 
-dialogForm = uic.loadUiType("UI_Dialog.ui")[0]
+from DialogUi import Ui_Dialog
 
-class Dialog(QtWidgets.QWidget, dialogForm):
+class Dialog(QtWidgets.QWidget, Ui_Dialog):
     def __init__(self,parent = None):
         super().__init__(parent,QtCore.Qt.Window)
         self.setupUi(self)

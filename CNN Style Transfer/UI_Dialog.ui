@@ -9,21 +9,47 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>504</width>
-    <height>429</height>
+    <width>536</width>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Choose Images</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background:rgb(255, 255, 255)</string>
+   <string notr="true">QWidget{
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:1 rgba(255, 255, 255, 255));
+}</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="1">
     <layout class="QGridLayout" name="Grid">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <property name="horizontalSpacing">
+      <number>6</number>
+     </property>
      <item row="0" column="0">
       <widget class="QPushButton" name="AddPic">
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+	font: 16pt &quot;Segoe Script&quot;;
+	color:  rgb(0, 0, 0);
+	border: 1px;
+	background: rgba(255, 255, 255,0);
+}
+QPushButton:hover{
+	text-decoration: underline;
+	color: rgb(0, 157, 0);
+}</string>
+       </property>
        <property name="text">
         <string>Добавить изображение</string>
        </property>
@@ -37,8 +63,20 @@
        <property name="whatsThis">
         <string/>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+	font: 16pt &quot;Segoe Script&quot;;
+	color:  rgb(227, 0, 3);
+	border: 1px;
+	background: rgba(255, 255, 255,0);
+}
+QPushButton:hover{
+	text-decoration: underline;
+	color: rgb(0, 157, 0);
+}</string>
+       </property>
        <property name="text">
-        <string>Выбрать</string>
+        <string>Применить</string>
        </property>
       </widget>
      </item>
@@ -46,6 +84,18 @@
       <widget class="QPushButton" name="TakeStyle">
        <property name="enabled">
         <bool>true</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+	font: 16pt &quot;Segoe Script&quot;;
+	color:  rgb(0, 0, 0);
+	border: 1px;
+	background: rgba(255, 255, 255,0);
+}
+QPushButton:hover{
+	text-decoration: underline;
+	color: rgb(0, 157, 0);
+}</string>
        </property>
        <property name="text">
         <string>Добавить стили</string>
@@ -60,6 +110,10 @@
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QLabel" name="labizo">
+         <property name="styleSheet">
+          <string notr="true">font: 75 14pt &quot;Segoe Script&quot;;
+background: rgba(255, 255, 255,0);</string>
+         </property>
          <property name="text">
           <string>Изображения</string>
          </property>
@@ -73,6 +127,10 @@
        </item>
        <item>
         <widget class="QLabel" name="labstyle">
+         <property name="styleSheet">
+          <string notr="true">font: 75 14pt &quot;Segoe Script&quot;;
+background: rgba(255, 255, 255,0);</string>
+         </property>
          <property name="text">
           <string>Стили</string>
          </property>
